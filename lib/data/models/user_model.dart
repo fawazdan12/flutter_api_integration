@@ -1,71 +1,84 @@
-import 'package:bloc/data/models/apprenant_model.dart';
+
+import 'package:bloc/domain/entities/user.dart';
 
 class UserModel {
   final int id;
-  final String nom;
-  final String prenom;
-  final String sexe;
-  final String numerotel;
-  final String dateNaissance;
+  final String name;
   final String email;
-  final String dateInscription;
-  final String role;
-  final String type;
-  final String updatedAt;
   final String createdAt;
-  final ApprenantModel? apprenant;
 
   UserModel({
     required this.id,
-    required this.nom,
-    required this.prenom,
-    required this.sexe,
-    required this.numerotel,
-    required this.dateNaissance,
+    required this.name,
     required this.email,
-    required this.dateInscription,
-    required this.role,
-    required this.type,
-    required this.updatedAt,
     required this.createdAt,
-    this.apprenant,
   });
 
+  // Factory constructor pour créer un UserModel à partir de JSON
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      nom: json['nom'],
-      prenom: json['prenom'],
-      sexe: json['sexe'],
-      numerotel: json['numerotel'],
-      dateNaissance: json['dateNaissance'],
-      email: json['email'],
-      dateInscription: json['dateInscription'],
-      role: json['role'],
-      type: json['type'],
-      updatedAt: json['updated_at'],
-      createdAt: json['created_at'],
-      apprenant: json['apprenant'] != null
-          ? ApprenantModel.fromJson(json['apprenant'])
-          : null,
+      id: json['id'] as int,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      createdAt: json['created_at'] as String,
     );
   }
 
+  // Méthode pour convertir le modèle en entité User
+  User toEntity() {
+    return User(
+      id: id,
+      name: name,
+      email: email,
+      createdAt: DateTime.parse(createdAt),
+    );
+  }
+
+  // Méthode pour convertir l'entité en JSON (utile pour les mises à jour)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nom': nom,
-      'prenom': prenom,
-      'sexe': sexe,
-      'numerotel': numerotel,
-      'dateNaissance': dateNaissance,
+      'name': name,
       'email': email,
-      'dateInscription': dateInscription,
-      'role': role,
-      'type': type,
-      'updated_at': updatedAt,
       'created_at': createdAt,
-      'apprenant': apprenant?.toJson(),
     };
+  }
+
+  // Méthode pour créer une copie avec des modifications
+  UserModel copyWith({
+    int? id,
+    String? name,
+    String? email,
+    String? createdAt,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is UserModel &&
+        other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.createdAt == createdAt;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        createdAt.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, name: $name, email: $email, createdAt: $createdAt)';
   }
 }

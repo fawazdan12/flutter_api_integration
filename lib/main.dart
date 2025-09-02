@@ -1,21 +1,31 @@
+import 'package:bloc/config/theme/theme.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  // final dio = Dio();
+  // final reponse = await dio.get('https://dart.dev');
+  // log(reponse.toString());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
-
+ 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+     final themeMode = ref.watch(themeProvider);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: TAppTheme.lightThemeData(context),
+      darkTheme: TAppTheme.darkThemeData(context),
+      themeMode: themeMode,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
