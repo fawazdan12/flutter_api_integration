@@ -18,7 +18,7 @@ class AuthDataSource {
 
   AuthDataSource({
     Dio? dio,
-    this.baseUrl = 'https://your-api-base-url.com/api',
+    this.baseUrl = 'https://0ba86145ccd9.ngrok-free.app',
   }) : _dio = dio ?? Dio() {
     _configureDio();
   }
@@ -50,7 +50,7 @@ class AuthDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/auth/login',
+        '/api/login',
         data: {
           'email': email,
           'password': password,
@@ -75,7 +75,7 @@ class AuthDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/auth/register',
+        '/api/register',
         data: {
           'name': name,
           'email': email,
